@@ -55,6 +55,28 @@ namespace SafariAuthService.Controllers
             return Ok(response.Token);
         
         
-        } 
+        }
+
+
+
+        [HttpPost("assignrole")]
+
+        public async Task<ActionResult<ResponseDTO>> AssignRole(AssignRoleDTO assignRoleDTO)
+        {
+
+            var res = await _userservice.AssignUserRoleAsync(assignRoleDTO.Email, assignRoleDTO.Role) ;
+
+            if (res)
+            {
+                _response.Result = res;
+                return Ok(_response);
+            }
+
+            _response.ErrorMessage = "User failed to be assigned the Role";
+            _response.Result = res;
+            _response.Issuccess = false;
+            return BadRequest(_response);
+
+        }
     }
 }

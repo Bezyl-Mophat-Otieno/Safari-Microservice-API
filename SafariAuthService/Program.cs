@@ -1,9 +1,13 @@
+using Ecommerce.Extensions;
+using Ecommerce.Services;
+using Ecommerce.Services.Iservices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SafariAuthService.Data;
 using SafariAuthService.Models;
 using SafariAuthService.Services;
 using SafariAuthService.Services.Iservice;
+using SafariAuthService.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +37,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Our application services 
 builder.Services.AddScoped<IUser, Userservice>();
+builder.Services.AddScoped<IJwt, JWTservice>();
+
+// Allow the protection of routes using bearer of token and authorization using policy
+builder.AddAuth();
+builder.AddminPolicy();
+builder.Services.Configure<JWToptions>(builder.Configuration.GetSection("JWToptions"));
+
 
 
 var app = builder.Build();
@@ -48,6 +59,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

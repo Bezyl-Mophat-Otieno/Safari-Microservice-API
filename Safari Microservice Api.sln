@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafariAuthService", "SafariAuthService\SafariAuthService.csproj", "{A315E97A-E55E-4E2D-8AAC-162C9687980C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafariAuthService", "SafariAuthService\SafariAuthService.csproj", "{A315E97A-E55E-4E2D-8AAC-162C9687980C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CouponService", "CouponService\CouponService.csproj", "{AEC3CBC8-1120-4889-B0B6-0E2026CF53F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CouponService", "CouponService\CouponService.csproj", "{AEC3CBC8-1120-4889-B0B6-0E2026CF53F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToursService", "ToursService\ToursService.csproj", "{C55DC5F2-2DD5-4C0C-A7BA-790A20CD05F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AEC3CBC8-1120-4889-B0B6-0E2026CF53F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC3CBC8-1120-4889-B0B6-0E2026CF53F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEC3CBC8-1120-4889-B0B6-0E2026CF53F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C55DC5F2-2DD5-4C0C-A7BA-790A20CD05F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C55DC5F2-2DD5-4C0C-A7BA-790A20CD05F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C55DC5F2-2DD5-4C0C-A7BA-790A20CD05F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C55DC5F2-2DD5-4C0C-A7BA-790A20CD05F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

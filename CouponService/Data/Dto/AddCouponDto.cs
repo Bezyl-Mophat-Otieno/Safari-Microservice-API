@@ -11,8 +11,6 @@ namespace CouponService.Data.Dto
         [Range(100, 2000)]
         public int CouponAmount { get; set; }
 
-        [Required]
-        [Range(100, int.MaxValue)]
         public int CouponMinAmount { get; set; }
     }
 }

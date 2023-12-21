@@ -9,6 +9,9 @@ namespace CouponService.Profiles
         public CouponProfile()
         {
             CreateMap<Coupon , AddCouponDto>().ReverseMap();
+            CreateMap<Coupon,UpdateCouponDTO>().ReverseMap();
+
+           
         }
     }
 }

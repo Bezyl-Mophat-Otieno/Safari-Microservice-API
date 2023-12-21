@@ -9,7 +9,7 @@ namespace CouponService.Services.Iservices
             );
 
         Task<string> AddCoupon(Coupon coupon);
-        Task<string> UpdateCoupon();
+        Task<string> UpdateCoupon(Coupon updated);
         Task<string> DeleteCoupon(Coupon coupon);
 
 

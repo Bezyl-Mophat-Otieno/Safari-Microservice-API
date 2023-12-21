@@ -1,8 +1,8 @@
 ﻿namespace CouponService.Extensions;
-using CouponService.Data;
 using Microsoft.EntityFrameworkCore;
+using ToursService.Data;
 
-    public static class AddMigrations
+public static class AddMigrations
     {
 
         public static IApplicationBuilder UseMigrations(this IApplicationBuilder app)

@@ -42,6 +42,7 @@ builder.Services.AddScoped<IJwt, JWTservice>();
 // Allow the protection of routes using bearer of token and authorization using policy
 builder.AddAuth();
 builder.AddminPolicy();
+// Configure the JWT options 
 builder.Services.Configure<JWToptions>(builder.Configuration.GetSection("JWToptions"));
 
 

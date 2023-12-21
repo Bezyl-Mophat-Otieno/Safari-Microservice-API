@@ -1,9 +1,8 @@
-using CouponService.Data;
 using CouponService.Extensions;
-using CouponService.Services;
-using CouponService.Services.Iservices;
-using CouponService.Utilities;
 using Microsoft.EntityFrameworkCore;
+using ToursService.Data;
+using ToursService.Services;
+using ToursService.Services.Iservice;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,25 +12,24 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// Adding custom services 
-// This service  will be used to verify the token on protected routes .
-builder.AddAuth();
 
-// Configure databases
+// Database connection 
 
 builder.Services.AddDbContext<SafariDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 
-// Register Automapper
+// custom services extended inside the extensions
+builder.AddAuth();
+
+// Register Automapper 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Register Services for DI.
+builder.Services.AddScoped<ITour, ToursafariService>();
+builder.Services.AddScoped<Iimage, ImagetourService>();
 
-//Register services 
-builder.Services.AddScoped<Icoupon, CouponsService>();
 
-// Configure JWT options
-builder.Services.Configure<JWToptions>(builder.Configuration.GetSection("JWToptions"));
 
 var app = builder.Build();
 
@@ -42,8 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Middleware added 
-app.UseMigrations();
+app.UseMigrations();    
 
 app.UseHttpsRedirection();
 

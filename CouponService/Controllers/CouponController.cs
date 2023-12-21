@@ -15,7 +15,7 @@ namespace CouponService.Controllers
         private readonly Icoupon _couponservice;
         private readonly IMapper _mapper;
         private readonly ResponseDTO _responsedto;
-        public CouponController(Icoupon couponservice , IMapper mapper , ResponseDTO response)
+        public CouponController(Icoupon couponservice , IMapper mapper)
         {
             _couponservice = couponservice;
             _mapper = mapper;
@@ -32,7 +32,7 @@ namespace CouponService.Controllers
             var coupons = await _couponservice.GetAllCoupons();
 
             _responsedto.Result = coupons;
-            return Ok(coupons);
+            return Ok(_responsedto);
 
         }
 
@@ -71,11 +71,11 @@ namespace CouponService.Controllers
 
         }
 
-        [HttpDelete("Id")]
+        [HttpDelete("{Id}")]
         [Authorize(Roles = "Admin")]
 
 
-        public async Task<ActionResult<string>> DeleteCoupon(Guid Id)
+        public async Task<ActionResult<ResponseDTO>> DeleteCoupon(Guid Id)
         {
 
             var coupon = await _couponservice.GetCoupon(Id);
@@ -85,6 +85,32 @@ namespace CouponService.Controllers
             return Ok(_responsedto);
         }
 
+        [HttpPut("{Id}")]
+
+        [Authorize(Roles ="Admin")]
+
+        public async Task<ActionResult<ResponseDTO>> UpdateCoupon(Guid Id , UpdateCouponDTO updatedcoupon) {
+        
+            var existingcoupon = await _couponservice.GetCoupon(Id);
+
+            if(existingcoupon != null)
+            {
+                // use automapper to update the provided fields
+
+                _mapper.Map(updatedcoupon,existingcoupon);
+
+                 await _couponservice.UpdateCoupon(existingcoupon);
+
+                _responsedto.Result = existingcoupon;
+
+                return Ok(_responsedto);
+
+            }
+
+            return BadRequest("The coupon not found");
+        
+        
+        }
     }
 
 

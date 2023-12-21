@@ -90,11 +90,11 @@ namespace CouponService.Services
             }
         }
 
-        public async Task<string> UpdateCoupon()
+        public async Task<string> UpdateCoupon(Coupon updated)
         {
             try
             {
-
+                     _dbContext.Coupons.Update(updated);
                 await _dbContext.SaveChangesAsync();
                 return "Updated";
 

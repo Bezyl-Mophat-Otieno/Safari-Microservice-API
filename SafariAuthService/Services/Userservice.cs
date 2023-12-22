@@ -7,6 +7,7 @@ using SafariAuthService.Data;
 using SafariAuthService.Data.Dto;
 using SafariAuthService.Models;
 using SafariAuthService.Services.Iservice;
+using SafariMSBus;
 
 namespace SafariAuthService.Services
 {
@@ -19,14 +20,18 @@ namespace SafariAuthService.Services
         private readonly RoleManager<IdentityRole> _rolemanager;
         private readonly IJwt _jwtservice;
 
+        private readonly IConfiguration _configuration;
 
-        public Userservice( IMapper mapper , SafariDBContext dBContext , UserManager<ApplicationUser> usermanager ,RoleManager<IdentityRole> rolemanager , IJwt jwtservice)
+
+        public Userservice( IMapper mapper , SafariDBContext dBContext , UserManager<ApplicationUser> usermanager ,RoleManager<IdentityRole> rolemanager , IJwt jwtservice , IConfiguration configuration)
         {
             _mapper = mapper;
             _dbContext = dBContext;
             _usermanager = usermanager;
             _rolemanager = rolemanager;
             _jwtservice = jwtservice;
+            _configuration = configuration;
+
             
         }
         public async Task<bool> AssignUserRoleAsync(string Email, string RoleName)
@@ -141,6 +146,19 @@ namespace SafariAuthService.Services
                     await _usermanager.AddToRoleAsync(mappeduser , user.Role);
 
 
+                    // Send the User to Queue.
+
+                    var message = new UserMessageDTO()
+                    {
+                        Name = user.Name,
+                        Email = user.Email
+                    };
+
+                    var messagebus = new MessageBus();
+
+                    var queue = _configuration.GetSection("ServiceBus:registration").Value;
+
+                    await messagebus.PublishMessage(message,queue);
 
                     return string.Empty;
                 }

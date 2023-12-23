@@ -48,5 +48,20 @@ namespace ToursService.Controllers
 
         }
 
+        [HttpGet("{Id}")]
+
+        public async Task<ActionResult<ResponseDTO>> GetTourById(Guid Id)
+        {
+            var tour = await _tourservice.GetTourAsync(Id);
+
+            if(tour == null)
+            {
+                _response.ErrorMessage = "Tour Destination Not Found";
+                return NotFound(_response);
+            }
+            _response.Result = tour;
+            return Ok(_response);
+        }
+
     }
 }

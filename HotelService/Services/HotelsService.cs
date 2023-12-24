@@ -30,6 +30,22 @@ namespace HotelService.Services
             }
         }
 
+        public async Task<bool> DeleteHotel(Hotel hotel)
+        {
+            try {
+            
+                 _dbContext.Remove(hotel);
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            
+            }catch(Exception ex)
+            {
+
+                return false;
+            }
+        }
+
         public async Task<Hotel> GetHotelById(Guid id)
         {
             try
@@ -58,6 +74,23 @@ namespace HotelService.Services
             catch (Exception ex)
             {
                 return new List<Hotel>();
+
+            }
+        }
+
+        public async Task<string> UpdateHotel()
+        {
+            try {
+
+                await _dbContext.SaveChangesAsync();
+
+                return "Hotel Information Updated Successfully";
+
+            
+            
+            }catch(Exception ex)
+            {
+                return "Failed to Update Hotel Information";
 
             }
         }

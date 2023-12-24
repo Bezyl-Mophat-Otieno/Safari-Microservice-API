@@ -63,5 +63,49 @@ namespace ToursService.Controllers
             return Ok(_response);
         }
 
+        [HttpDelete("{Id}")]
+        [Authorize(Roles = "Admin")]
+
+
+        public async Task<ActionResult> DeleteHotel(Guid Id)
+        {
+            var hotel = await _hotelservice.GetHotelById(Id);
+            if (hotel == null)
+            {
+                _response.ErrorMessage = "Failed to Find the Hotel with that ID";
+                return NotFound(_response);
+            }
+            var isSuccess = await _hotelservice.DeleteHotel(hotel);
+
+            if (isSuccess)
+            {
+                return NoContent();
+            }
+            _response.ErrorMessage = "Operation Failed";
+            return StatusCode(500, _response);
+        }
+
+        [HttpPut("{Id}")]
+        [Authorize(Roles = "Admin")]
+
+        public async Task<ActionResult<ResponseDTO>> UpdateHotel(AddTourDTO updatedTour, Guid Id)
+        {
+
+            var existingTour = await _tourservice.GetTourAsync(Id);
+            if (existingTour == null)
+            {
+                _response.ErrorMessage = "Tour with such an Id not Found";
+                return NotFound(_response);
+            }
+
+            var mappedHotel = _mapper.Map(updatedTour, existingTour);
+
+            _response.Result = mappedHotel;
+            await _tourservice.UpdateTourAsync();
+
+            return Ok(_response);
+
+        }
+
     }
 }

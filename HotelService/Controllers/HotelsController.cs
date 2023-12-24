@@ -3,6 +3,7 @@ using HotelService.Data.Dto;
 using HotelService.Models;
 using HotelService.Models.Dto;
 using HotelService.Services.Iservice;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,5 +80,49 @@ namespace HotelService.Controllers
 
         }
 
+        [HttpDelete("{Id}")]
+        [Authorize(Roles = "Admin")]
+
+
+        public async Task<ActionResult> DeleteHotel(Guid Id)
+        {
+            var hotel = await _hotelservice.GetHotelById(Id);
+            if(hotel == null)
+            {
+                _response.ErrorMessage = "Failed to Find the Hotel with that ID";
+                return NotFound(_response);
+            }
+            var isSuccess = await _hotelservice.DeleteHotel(hotel);
+
+            if (isSuccess)
+            {
+                return NoContent();
+            }
+            _response.ErrorMessage = "Operation Failed";
+            return StatusCode(500,_response);
         }
-    }
+
+        [HttpPut("{Id}")]
+        [Authorize(Roles = "Admin")]
+
+        public async Task<ActionResult<ResponseDTO>> UpdateHotel(AddHotelDTO updatedhotel, Guid Id)
+        {
+
+            var existingHotel = await _hotelservice.GetHotelById(Id);
+            if(existingHotel == null)
+            {
+                _response.ErrorMessage = "Hotel with such an Id not Found";
+                return NotFound(_response);
+            }
+
+            var mappedHotel = _mapper.Map(updatedhotel,existingHotel);
+
+            _response.Result = mappedHotel;
+            await _hotelservice.UpdateHotel();
+
+            return Ok(_response);
+
+        }
+
+        }
+}

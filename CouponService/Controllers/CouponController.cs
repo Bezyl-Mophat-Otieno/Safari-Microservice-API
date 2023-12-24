@@ -97,11 +97,11 @@ namespace CouponService.Controllers
             {
                 // use automapper to update the provided fields
 
-                _mapper.Map(updatedcoupon,existingcoupon);
+                var updated = _mapper.Map(updatedcoupon,existingcoupon);
 
-                 await _couponservice.UpdateCoupon(existingcoupon);
+                 await _couponservice.UpdateCoupon();
 
-                _responsedto.Result = existingcoupon;
+                _responsedto.Result = updated;
 
                 return Ok(_responsedto);
 

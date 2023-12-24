@@ -11,5 +11,8 @@ namespace ToursService.Services.Iservice
 
         Task<string> AddTour(Tour tour);
 
+        Task<string> UpdateTourAsync();
+        Task<bool> DeleteTourAsync(Tour tour);
+
     }
 }

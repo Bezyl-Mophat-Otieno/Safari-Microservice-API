@@ -90,7 +90,7 @@ namespace CouponService.Services
             }
         }
 
-        public async Task<string> UpdateCoupon(Coupon updated)
+        public async Task<string> UpdateCoupon()
         {
             try
             {

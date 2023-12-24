@@ -35,6 +35,25 @@ namespace ToursService.Services
             }
         }
 
+        public async Task<bool> DeleteTourAsync(Tour tour)
+        {
+                try
+                {
+
+                    _dbContext.Remove(tour);
+                    await _dbContext.SaveChangesAsync();
+
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                
+            }
+        }
+
         public async Task<List<ToursandImagesResponseDTO>> GetAllToursAsync()
         {
             try {
@@ -76,8 +95,27 @@ namespace ToursService.Services
 
             
             }
+
+
         }
 
-        
+        public async Task<string> UpdateTourAsync()
+        {
+            try
+            {
+
+                await _dbContext.SaveChangesAsync();
+
+                return "Tour Information Updated Successfully";
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return "Failed to Update Tour Information";
+
+            }
+        }
     }
 }

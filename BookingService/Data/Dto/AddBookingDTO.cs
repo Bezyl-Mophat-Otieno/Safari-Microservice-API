@@ -2,6 +2,7 @@
 {
     public class AddBookingDTO
     {
+        public Guid UserId {  get; set; } 
         public string CouponCode { get; set; } = string.Empty;
         public double Discount { get; set; }
         public double BookingTotal { get; set; }

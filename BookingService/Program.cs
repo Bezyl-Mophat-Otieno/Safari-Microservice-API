@@ -22,7 +22,7 @@ builder.Services.AddHttpClient("Tours",c=>c.BaseAddress = new Uri(builder.Config
 builder.Services.AddHttpClient("Coupons",c=>c.BaseAddress = new Uri(builder.Configuration.GetSection("ServiceUrls:couponservice").Value));
 builder.Services.AddHttpClient("Hotels",c=>c.BaseAddress = new Uri(builder.Configuration.GetSection("ServiceUrls:hotelservice").Value));
 
-
+Stripe.StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:apikey").Value;
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<SafariDBContext>(options =>

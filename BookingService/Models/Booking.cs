@@ -16,8 +16,16 @@
 
             public Guid HotelId { get; set; }
 
-            
+            public string? StripeSessionId { get; set; }
 
-   
-        }
+
+            public string Status { get; set; } = string.Empty;
+
+        public string PaymentIntent { get; set; } = string.Empty;
+
+
+
+
+
     }
+}

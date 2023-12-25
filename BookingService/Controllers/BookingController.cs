@@ -145,6 +145,33 @@ namespace BookingService.Controllers
 
         }
 
+        [HttpPost("Pay")]
+
+        public async Task<ActionResult<ResponseDTO>> MakePayment(StripeRequestDTO stripeReq) {
+        
+            var res = await _bookingservice.MakePayments(stripeReq);
+            _response.Result = res;
+            return Ok(_response);
+        
+        }
+
+        [HttpPost("validate/{Id}")]
+
+        public async Task<ActionResult<ResponseDTO>> validatePayment(Guid Id)
+        {
+
+            var res = await _bookingservice.ValidatePayments(Id);
+
+            if (res)
+            {
+                _response.Result = res;
+                return Ok(_response);
+            }
+
+            _response.ErrorMessage = "Payment Failed!";
+            return BadRequest(_response);
+        }
+
 
     }
 }

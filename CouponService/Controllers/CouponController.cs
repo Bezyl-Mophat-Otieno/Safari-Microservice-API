@@ -5,6 +5,7 @@ using CouponService.Services.Iservices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 
 namespace CouponService.Controllers
 {
@@ -79,12 +80,23 @@ namespace CouponService.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
-        public async Task<ActionResult<ResponseDTO>> GetCoupon(AddCouponDto newcoupon)
+        public async Task<ActionResult<ResponseDTO>> AddCoupon(AddCouponDto newcoupon)
         {
 
-            var mappedcoupon = _mapper.Map<Coupon>(newcoupon);
+            var mappedcoupon = _mapper.Map<Models.Coupon>(newcoupon);
+            // stripe coupons setup
+            var options = new CouponCreateOptions()
+            {
+                AmountOff = (long)mappedcoupon.CouponAmount * 100,
+                Currency = "KES",
+                Id = mappedcoupon.CouponCode,
+                Name = mappedcoupon.CouponCode
+            };
+
+            var stripeservice = new Stripe.CouponService();
+            stripeservice.Create(options);
             var response = await _couponservice.AddCoupon(mappedcoupon);
 
             _responsedto.Result = response;
@@ -93,7 +105,7 @@ namespace CouponService.Controllers
         }
 
         [HttpDelete("{Id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
 
         public async Task<ActionResult<ResponseDTO>> DeleteCoupon(Guid Id)
@@ -101,6 +113,8 @@ namespace CouponService.Controllers
 
             var coupon = await _couponservice.GetCoupon(Id);
             var response = await _couponservice.DeleteCoupon(coupon);
+            var stripeservice = new Stripe.CouponService();
+            stripeservice.Delete(coupon.CouponCode);
 
             _responsedto.Result = response;
             return Ok(_responsedto);
@@ -121,6 +135,24 @@ namespace CouponService.Controllers
                 var updated = _mapper.Map(updatedcoupon,existingcoupon);
 
                  await _couponservice.UpdateCoupon();
+
+                // First delete the stripe coupon before creating a new one .
+
+                var stripeservice = new Stripe.CouponService();
+                stripeservice.Delete(existingcoupon.CouponCode);
+
+
+                // Create the new coupon based on updated information.
+
+                var options = new CouponCreateOptions()
+                {
+                    AmountOff = (long)updatedcoupon.CouponAmount * 100,
+                    Currency = "KES",
+                    Id = updatedcoupon.CouponCode,
+                    Name = updatedcoupon.CouponCode
+                };
+
+                stripeservice.Create(options);
 
                 _responsedto.Result = updated;
 

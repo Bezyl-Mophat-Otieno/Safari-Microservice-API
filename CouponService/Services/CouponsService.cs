@@ -90,11 +90,27 @@ namespace CouponService.Services
             }
         }
 
+        public async Task<Coupon> GetCouponByCode(string code)
+        {
+            try {
+
+                var coupon =  await _dbContext.Coupons.Where(x=>x.CouponCode == code).FirstOrDefaultAsync();
+                return coupon;
+
+
+            
+            
+            }catch(Exception ex)
+            {
+
+                return null;
+            }
+        }
+
         public async Task<string> UpdateCoupon()
         {
             try
             {
-                     _dbContext.Coupons.Update(updated);
                 await _dbContext.SaveChangesAsync();
                 return "Updated";
 

@@ -67,15 +67,15 @@ namespace ToursService.Controllers
         [Authorize(Roles = "Admin")]
 
 
-        public async Task<ActionResult> DeleteHotel(Guid Id)
+        public async Task<ActionResult> DeleteTour(Guid Id)
         {
-            var hotel = await _hotelservice.GetHotelById(Id);
-            if (hotel == null)
+            var tour = await _tourservice.GetTourAsync(Id);
+            if (tour == null)
             {
-                _response.ErrorMessage = "Failed to Find the Hotel with that ID";
+                _response.ErrorMessage = "Failed to Find the Tour with that ID";
                 return NotFound(_response);
             }
-            var isSuccess = await _hotelservice.DeleteHotel(hotel);
+            var isSuccess = await _tourservice.DeleteTourAsync(tour);
 
             if (isSuccess)
             {
@@ -88,7 +88,7 @@ namespace ToursService.Controllers
         [HttpPut("{Id}")]
         [Authorize(Roles = "Admin")]
 
-        public async Task<ActionResult<ResponseDTO>> UpdateHotel(AddTourDTO updatedTour, Guid Id)
+        public async Task<ActionResult<ResponseDTO>> UpdateTour(AddTourDTO updatedTour, Guid Id)
         {
 
             var existingTour = await _tourservice.GetTourAsync(Id);
@@ -98,9 +98,9 @@ namespace ToursService.Controllers
                 return NotFound(_response);
             }
 
-            var mappedHotel = _mapper.Map(updatedTour, existingTour);
+            var mappedTour = _mapper.Map(updatedTour, existingTour);
 
-            _response.Result = mappedHotel;
+            _response.Result = mappedTour;
             await _tourservice.UpdateTourAsync();
 
             return Ok(_response);

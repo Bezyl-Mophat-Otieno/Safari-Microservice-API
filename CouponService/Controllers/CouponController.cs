@@ -57,6 +57,27 @@ namespace CouponService.Controllers
 
         }
 
+
+        [HttpGet("Get/{code}")]
+
+
+        public async Task<ActionResult<ResponseDTO>> GetCoupon(string code)
+        {
+
+            var coupon = await _couponservice.GetCouponByCode(code);
+
+            if (coupon == null)
+            {
+                _responsedto.ErrorMessage = "Not Found";
+                _responsedto.Issuccess = false;
+                return NotFound(_responsedto);
+            }
+
+            _responsedto.Result = coupon;
+            return Ok(_responsedto);
+
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
 
